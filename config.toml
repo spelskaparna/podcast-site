@@ -23,8 +23,15 @@ canonifyurls = true
     weight     = 0
 
     [[menu.nav]]
+    identifier = "RSS"
+    name       = "RSS"
+    url        = "http://spelskaparna.libsyn.com/rss"
+    weight     = 1
+
+
+    [[menu.nav]]
     identifier = "about"
     name       = "om"
     url        = "/about"
-    weight     = 1
+    weight     = 2
 
