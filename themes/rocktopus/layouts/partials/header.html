@@ -5,6 +5,12 @@
 		<title>{{ .Title }}</title>
 		{{ with .Site.Author.name }}<meta name="author" content="{{ . }}">{{ end }}
 		{{ .Hugo.Generator }}
+        {{ if .IsHome }}
+            {{with .Site.Params.description}} <meta name="description" content="{{ . }}" />{{end}}
+        {{end}}
+        {{if not .IsHome}}
+            {{with .Params.summary}} <meta name="description" content="{{ . }}" />{{end}}
+        {{ end }}
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="{{ .Site.BaseURL }}/css/normalize.css">
