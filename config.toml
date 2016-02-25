@@ -13,7 +13,7 @@ canonifyurls = true
     blogHeader = "<b>Spelskaparna</b>"
     tagline = " en podcast om personerna bakom spelen"
     contactEmail = "info@spelskaparna.se"
-    description = "en intervjupodcast med folk från spelindustrin"
+    description = "En intervjupodcast med personer från spelindustrin"
 [menu]
     # Menu for the nav bar.
     # Ideal count is 3 items, see demo site for an example
