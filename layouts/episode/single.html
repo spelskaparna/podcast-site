@@ -3,7 +3,7 @@
 
 <div class="row" style="margin-top: 2rem">
 	<div class="twelve columns">
-		<a class="post-title-link" href="{{ .Permalink }}">{{ .Title }}</a>
+        <a class="post-title-link" href="{{ .Permalink }}">{{with .Title }} {{ . }} {{end}} {{if .Params.name}} Spelskaparna - {{.File.TranslationBaseName}} - {{ .Params.name }} ({{.Params.occupation}} | {{.Params.company}}){{end}}</a>
 	</div>
 </div>
 <div class="row">
