@@ -1,5 +1,5 @@
 <li>
-<a href="{{ .Permalink }}">{{ .Title }}</a>
+<a href="{{ .Permalink }}">{{with .Title }} {{ . }} {{end}} {{if .Params.name}} Spelskaparna - {{.File.TranslationBaseName}} - {{ .Params.name }} ({{.Params.occupation}} | {{.Params.company}}){{end}}</a>
 <p class="summary">{{.Params.summary}}</p>
 <div class="post-postedby">{{ .Date.Format "Mon, Jan 2, 2006" }}</div>
 </li>
