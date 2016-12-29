@@ -9,6 +9,7 @@ import pyautogui
 import re
 import json
 import click
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 
@@ -34,7 +35,7 @@ def login_libsyn(login, passwd):
     return driver
 
 
-def upload(title, description, login, passwd):
+def upload(title, description, date, login, passwd):
     driver = login_libsyn(login, passwd)
     driver.get("https://four.libsyn.com/content_edit/index/mode/episode")
 
@@ -46,12 +47,32 @@ def upload(title, description, login, passwd):
 
     iframe = driver.find_element_by_xpath("//iframe[@src='https://four.libsyn.com/lib/tinymce4_2/js/tinymce/plugins/codemirror/source.html']")
     driver.switch_to.frame(iframe)
-    time.sleep(5)
+    time.sleep(1)
     driver.execute_script('codemirror.getDoc().setValue({})'.format(json.dumps(description)));
-    time.sleep(5)
+    time.sleep(1)
     driver.switch_to.default_content()
     ok_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_44")))
     ok_btn.click()
+    
+    schedule_tab_id = 'ui-accordion-4-header-0'
+    schedule_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, schedule_tab_id)))
+    schedule_tab.click()
+    time.sleep(1)
+    basic_release_xpath = "//node()[@aria-labelledby='ui-id-31']"
+    basic_release_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, basic_release_xpath)))
+    basic_release_tab.click()
+    time.sleep(1)
+    new_release_option_id = 'set_basic_release_date-2'
+    new_release_option = driver.wait.until(EC.element_to_be_clickable((By.ID, new_release_option_id)))
+    new_release_option.click()
+    time.sleep(1)
+    date_id = "basic_release_date_date"
+    time_id = "basic_release_date_time_input"
+    javascript = "document.getElementById('{}').setAttribute('value', '01:00 AM')".format(time_id)
+    driver.execute_script(javascript);
+    date_string = date.strftime('%Y-%m-%d')
+    javascript = "document.getElementById('{}').setAttribute('value', '{}')".format(date_id, date_string)
+    driver.execute_script(javascript);
 
     button = driver.wait.until(EC.element_to_be_clickable(
             (By.XPATH, "//text()[contains(.,'Add Media File')]/../..")))
@@ -83,6 +104,19 @@ def extract_title(number):
                     matches[name]= match.group(1)
     title = '{} {} ({} | {})'.format(number, matches['name'], matches['occupation'], matches['company'])
     return title
+
+def extract_date(number):
+    path = episode_file_path(number)
+    pattern = r'date.*?(\d.*)'
+    program = re.compile(pattern)
+    with open(path,'r') as episode:
+        for row in episode:
+            match = program.match(row)
+            if match:
+                date = (match.group(1))
+    dt = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+    return dt
+
 
 def extract_description(number):
     path = os.path.join('public','episode', str(number), 'index.html')
@@ -136,7 +170,8 @@ def start(u, p, number, feature):
         replace('libsynid', libsyn_id, number)
     elif feature == 'upload':
         description = extract_description(number)
-        upload(title, description, u, p)
+        date = extract_date(number)
+        upload(title, description, date, u, p)
     input("Press Enter to continue...")
 
 
