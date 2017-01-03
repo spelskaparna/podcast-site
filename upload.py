@@ -127,8 +127,9 @@ def extract_description(number):
 
 def extract_file_details(title, u, p):
     driver = login_libsyn(u, p)
-
-    driver.get("https://four.libsyn.com/content/previously-published")
+    #url = "https://four.libsyn.com/content/previously-published"
+    url = "https://four.libsyn.com/content/scheduled-posts"
+    driver.get(url)
 
     xpath = "//node()[contains(@data-sort-val,'{}')]//text()[contains(.,'Link/Embed')]/../..".format(title)
     btn = driver.find_element_by_xpath(xpath)
