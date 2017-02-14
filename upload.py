@@ -4,13 +4,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-import os 
 import pyautogui
-import re
 import json
 import click
-from datetime import datetime
-from bs4 import BeautifulSoup
+import episode_parser as ep
 
 
 def init_driver():
@@ -82,49 +79,6 @@ def upload(title, description, date, login, passwd):
             (By.XPATH, "//text()[contains(.,'Upload from Hard Drive')]/../..")))
     button.click()
  
-def episode_file_path(number):
-    path = os.path.join('content','episode', str(number) +'.md')
-    return path
-
-def extract_title(number):
-    path = episode_file_path(number)
-    pattern = r'{}.*"(.*)"'
-    fields = ["name", "occupation", "company"]
-    programs = []
-    for field in fields:
-        program = re.compile(pattern.format(field))
-        programs.append((field, program))
-       
-    matches = {} 
-    with open(path,'r') as episode:
-        for row in episode:
-            for name, program in programs:
-                match = program.match(str(row))
-                if match:
-                    matches[name]= match.group(1)
-    title = '{} {} ({} | {})'.format(number, matches['name'], matches['occupation'], matches['company'])
-    return title
-
-def extract_date(number):
-    path = episode_file_path(number)
-    pattern = r'date.*?(\d.*)'
-    program = re.compile(pattern)
-    with open(path,'r') as episode:
-        for row in episode:
-            match = program.match(row)
-            if match:
-                date = (match.group(1))
-    dt = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
-    return dt
-
-
-def extract_description(number):
-    path = os.path.join('public','episode', str(number), 'index.html')
-    with open(path,'rb') as html:
-        soup = BeautifulSoup(html, "html.parser")
-        description = soup.find('div','content')
-    return str(description)
-
 def extract_file_details(title, u, p):
     driver = login_libsyn(u, p)
     #url = "https://four.libsyn.com/content/previously-published"
@@ -143,7 +97,7 @@ def extract_file_details(title, u, p):
 
 def replace(param, value, number):
     regex = r"{}.*=".format(param)
-    replacement = f'{param} ="{value}"\n'
+    replacement = '{} ="{}"\n'.format(param, value)
     path = episode_file_path(number)
     program = re.compile(regex)
     with open(path,'r') as f:
@@ -164,14 +118,14 @@ def replace(param, value, number):
 @click.argument('number')
 @click.argument('feature')
 def start(u, p, number, feature):
-    title = extract_title(number)
+    title = ep.extract_title(number)
     if feature == 'extract':
-        url, libsyn_id = extract_file_details(title, u, p)
+        url, libsyn_id = ep.extract_file_details(title, u, p)
         replace('audiofile', url, number)
         replace('libsynid', libsyn_id, number)
     elif feature == 'upload':
-        description = extract_description(number)
-        date = extract_date(number)
+        description = ep.extract_description(number)
+        date = ep.extract_date(number)
         upload(title, description, date, u, p)
     input("Press Enter to continue...")
 
