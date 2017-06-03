@@ -12,9 +12,6 @@
 	</div>
 	<div class="three columns">
 		<span style="font-size:small;">
-			{{ with .Params.tags }}
-			<i class="fa fa-tags"></i> {{ range . }}<a href="{{ $baseurl }}tags/{{ . | urlize }}">{{ . }}</a> {{ end }}
-			{{ end }}
 		</span>
 	</div>
 </div>

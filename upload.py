@@ -8,6 +8,7 @@ import pyautogui
 import json
 import click
 import episode_parser as ep
+import re
 
 
 def init_driver():
@@ -37,6 +38,7 @@ def upload(title, description, date, login, passwd):
     driver.get("https://four.libsyn.com/content_edit/index/mode/episode")
 
     title_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "item_title")))
+    title = title.decode('utf-8')
     title_field.send_keys(title)
 
     src_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_18")))
@@ -55,7 +57,7 @@ def upload(title, description, date, login, passwd):
     schedule_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, schedule_tab_id)))
     schedule_tab.click()
     time.sleep(1)
-    basic_release_xpath = "//node()[@aria-labelledby='ui-id-31']"
+    basic_release_xpath = "//node()[@aria-labelledby='ui-id-28']"
     basic_release_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, basic_release_xpath)))
     basic_release_tab.click()
     time.sleep(1)
@@ -98,7 +100,7 @@ def extract_file_details(title, u, p):
 def replace(param, value, number):
     regex = r"{}.*=".format(param)
     replacement = '{} ="{}"\n'.format(param, value)
-    path = episode_file_path(number)
+    path = ep.episode_file_path(number)
     program = re.compile(regex)
     with open(path,'r') as f:
         newlines = []
@@ -120,7 +122,7 @@ def replace(param, value, number):
 def start(u, p, number, feature):
     title = ep.extract_title(number)
     if feature == 'extract':
-        url, libsyn_id = ep.extract_file_details(title, u, p)
+        url, libsyn_id = extract_file_details(title, u, p)
         replace('audiofile', url, number)
         replace('libsynid', libsyn_id, number)
     elif feature == 'upload':

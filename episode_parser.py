@@ -82,5 +82,17 @@ def extract_description_text(number):
         description = soup.find('div','content').find('p')
     return strip_tags(str(description))
 
+def extract_tags(number):
+    path = episode_file_path(number)
+    pattern = r'tags.*"(.*)"'
+    program = re.compile(pattern)
+
+    with open(path,'r') as episode:
+        for row in episode:
+            match = program.match(str(row))
+            if match:
+                tags = match.group(1)
+    return tags
+
 
 
