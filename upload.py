@@ -36,15 +36,16 @@ def login_libsyn(login, passwd):
 def upload(title, description, date, login, passwd):
     driver = login_libsyn(login, passwd)
     driver.get("https://four.libsyn.com/content_edit/index/mode/episode")
-
+    details_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-42")))
+    details_tab.click()
     title_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "item_title")))
-    title = title.decode('utf-8')
+    title = title
     title_field.send_keys(title)
 
     src_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_18")))
     src_btn.click()
 
-    iframe = driver.find_element_by_xpath("//iframe[@src='https://four.libsyn.com/lib/tinymce4_2/js/tinymce/plugins/codemirror/source.html']")
+    iframe = driver.find_element_by_xpath("//iframe[@src='https://four.libsyn.com/lib/tinymce_4-6-5/plugins/codemirror/source.html']")
     driver.switch_to.frame(iframe)
     time.sleep(1)
     driver.execute_script('codemirror.getDoc().setValue({})'.format(json.dumps(description)));
@@ -52,10 +53,8 @@ def upload(title, description, date, login, passwd):
     driver.switch_to.default_content()
     ok_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_44")))
     ok_btn.click()
-    
-    schedule_tab_id = 'ui-accordion-4-header-0'
-    schedule_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, schedule_tab_id)))
-    schedule_tab.click()
+    scheduling_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-44")))
+    scheduling_tab.click()
     time.sleep(1)
     basic_release_xpath = "//node()[@aria-labelledby='ui-id-28']"
     basic_release_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, basic_release_xpath)))
@@ -72,6 +71,11 @@ def upload(title, description, date, login, passwd):
     date_string = date.strftime('%Y-%m-%d')
     javascript = "document.getElementById('{}').setAttribute('value', '{}')".format(date_id, date_string)
     driver.execute_script(javascript);
+
+
+    media_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-41")))
+    media_tab.click()
+    time.sleep(1)
 
     button = driver.wait.until(EC.element_to_be_clickable(
             (By.XPATH, "//text()[contains(.,'Add Media File')]/../..")))

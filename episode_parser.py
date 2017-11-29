@@ -2,7 +2,7 @@ import re
 from datetime import datetime
 from bs4 import BeautifulSoup
 import os 
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 
 class MLStripper(HTMLParser):
