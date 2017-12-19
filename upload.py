@@ -36,7 +36,7 @@ def login_libsyn(login, passwd):
 def upload(title, description, date, login, passwd):
     driver = login_libsyn(login, passwd)
     driver.get("https://four.libsyn.com/content_edit/index/mode/episode")
-    details_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-42")))
+    details_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-44")))
     details_tab.click()
     title_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "item_title")))
     title = title
@@ -53,7 +53,7 @@ def upload(title, description, date, login, passwd):
     driver.switch_to.default_content()
     ok_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_44")))
     ok_btn.click()
-    scheduling_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-44")))
+    scheduling_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-46")))
     scheduling_tab.click()
     time.sleep(1)
     basic_release_xpath = "//node()[@aria-labelledby='ui-id-28']"
@@ -73,7 +73,7 @@ def upload(title, description, date, login, passwd):
     driver.execute_script(javascript);
 
 
-    media_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-41")))
+    media_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-43")))
     media_tab.click()
     time.sleep(1)
 
