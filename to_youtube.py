@@ -3,7 +3,9 @@ from subprocess import call
 
 def upload(title, description, tags, filename):
     title_option = '--title="{}"'.format(title)
-    description_option = '--description=\'{}\''.format(description.encode('string-escape'))
+    description = description#.encode('unicode_escape').decode('utf-8')
+    print(description)
+    description_option = '--description="{}"'.format(description)
     category_option = '--category=Gaming'
     tags_option = '--tags="Spel,{}"'.format(tags)
     language_option = '--default-language="sv"'
@@ -13,4 +15,5 @@ def upload(title, description, tags, filename):
             tags_option, language_option, audio_language_option, client_secret_option, filename]
 
     command = " ".join(commands) 
+    print(command)
     call(command, shell=True)
