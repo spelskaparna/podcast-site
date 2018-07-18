@@ -36,7 +36,8 @@ def login_libsyn(login, passwd):
 def upload(title, description, date, login, passwd):
     driver = login_libsyn(login, passwd)
     driver.get("https://four.libsyn.com/content_edit/index/mode/episode")
-    details_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-44")))
+    details_tab_xpath = "//node()[@data-label='Details']"
+    details_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, details_tab_xpath)))
     details_tab.click()
     title_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "item_title")))
     title = title
@@ -47,16 +48,17 @@ def upload(title, description, date, login, passwd):
 
     iframe = driver.find_element_by_xpath("//iframe[@src='https://four.libsyn.com/lib/tinymce_4-6-5/plugins/codemirror/source.html']")
     driver.switch_to.frame(iframe)
-    time.sleep(1)
+    time.sleep(3)
     driver.execute_script('codemirror.getDoc().setValue({})'.format(json.dumps(description)));
-    time.sleep(1)
+    time.sleep(3)
     driver.switch_to.default_content()
     ok_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_44")))
     ok_btn.click()
-    scheduling_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-46")))
+    scheduling_xpath = "//node()[@data-label='Scheduling']"
+    scheduling_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, scheduling_xpath)))
     scheduling_tab.click()
     time.sleep(1)
-    basic_release_xpath = "//node()[@aria-labelledby='ui-id-28']"
+    basic_release_xpath = "//node()[@aria-controls='release_scheduler_tab-basic']"
     basic_release_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, basic_release_xpath)))
     basic_release_tab.click()
     time.sleep(1)
@@ -73,7 +75,8 @@ def upload(title, description, date, login, passwd):
     driver.execute_script(javascript);
 
 
-    media_tab = driver.wait.until(EC.element_to_be_clickable((By.ID, "ui-id-43")))
+    media_xpath = "//node()[@data-label='Media']"
+    media_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, media_xpath)))
     media_tab.click()
     time.sleep(1)
 
