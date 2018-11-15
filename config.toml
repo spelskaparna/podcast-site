@@ -3,6 +3,8 @@ title = "Spelskaparna"
 copyright = "Copyright (c) 2016, Olof Landin; all rights reserved."
 canonifyurls = true
 Paginate = 50
+summaryLength = 30
+DefaultContentLanguage = "sv"
 
 [author]
     name = "Olof Landin"
@@ -29,25 +31,3 @@ Paginate = 50
     name = "Om"
     url = "about/"
     weight = 3
-
-
-
-    [[menu.nav]]
-    identifier = "episode"
-    name       = "avsnitt"
-    url        = "/episode/"
-    weight     = 0
-
-    [[menu.nav]]
-    identifier = "RSS"
-    name       = "RSS"
-    url        = "http://spelskaparna.libsyn.com/rss"
-    weight     = 1
-
-
-    [[menu.nav]]
-    identifier = "about"
-    name       = "om"
-    url        = "/about"
-    weight     = 2
-
