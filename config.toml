@@ -2,21 +2,36 @@ languageCode = "sv"
 title = "Spelskaparna"
 copyright = "Copyright (c) 2016, Olof Landin; all rights reserved."
 canonifyurls = true
+Paginate = 50
 
 [author]
     name = "Olof Landin"
-[social]
-    facebook = "https://www.facebook.com/spelskaparna/"
-    twitter = "https://twitter.com/henrikwillstedt"
+    email= "info@spelskaparna.se"
+    facebook = "spelskaparna"
+    twitter = "ollelandin"
+    instagram = "https://twitter.com/ollelandin"
 [params]
     headerimg = "logga.png"
     blogHeader = "<b>Spelskaparna</b>"
     tagline = " en podcast om personerna bakom spelen"
     contactEmail = "info@spelskaparna.se"
     description = "En intervjupodcast med personer från spelindustrin"
+    logo = "img/logo2.png"
 [menu]
     # Menu for the nav bar.
     # Ideal count is 3 items, see demo site for an example
+[[menu.main]]
+    name = "Avsnitt"
+    url = "episode"
+    weight = 1
+
+[[menu.main]]
+    name = "Om"
+    url = "about/"
+    weight = 3
+
+
+
     [[menu.nav]]
     identifier = "episode"
     name       = "avsnitt"
