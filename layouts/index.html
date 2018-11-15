@@ -8,24 +8,17 @@
           </div>
         {{ end }}
         <div class="posts-list">
-          {{ range .Paginator.Pages }}
+            {{range first 2 .Data.Pages}}
             {{partial "preview.html" .}}
-          {{ end }}
+        {{end}}
         </div>
-        {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
           <ul class="pager main-pager">
-            {{ if .Paginator.HasPrev }}
-              <li class="previous">
-                <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
-              </li>
-            {{ end }}
-            {{ if .Paginator.HasNext }}
+           {{ if .Paginator.HasNext }}
               <li class="next">
-                <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
+                <a href="{{ .URL }}episode/">{{ i18n "olderPosts" }} &rarr;</a>
               </li>
             {{ end }}
           </ul>
-        {{ end }}
       </div>
     </div>
   </div>
