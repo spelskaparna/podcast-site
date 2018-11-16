@@ -1,5 +1,6 @@
 languageCode = "sv"
 title = "Spelskaparna"
+subTitle="fisk"
 copyright = "Copyright (c) 2016, Olof Landin; all rights reserved."
 canonifyurls = true
 Paginate = 50
@@ -13,11 +14,7 @@ DefaultContentLanguage = "sv"
     twitter = "ollelandin"
     instagram = "https://twitter.com/ollelandin"
 [params]
-    headerimg = "logga.png"
-    blogHeader = "<b>Spelskaparna</b>"
-    tagline = " en podcast om personerna bakom spelen"
-    contactEmail = "info@spelskaparna.se"
-    description = "En intervjupodcast med personer från spelindustrin"
+    subtitle = "podcasten om personerna bakom spelen"
     logo = "img/logo2.png"
 [menu]
     # Menu for the nav bar.

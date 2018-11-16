@@ -18,9 +18,9 @@
 - id: newerPosts
   translation: "Nyare inlägg"
 - id: previousPost
-  translation: "Förra inlägget"
+  translation: "Föregående"
 - id: nextPost
-  translation: "Nästa inlägg"
+  translation: "Nästa"
 - id: readTime
   translation: "minuter"
 - id: words
@@ -72,3 +72,7 @@
 # Related posts
 - id: seeAlso
   translation: "Se även'"
+
+  # specific
+- id: listenHere
+  translation: "Lyssna här"
