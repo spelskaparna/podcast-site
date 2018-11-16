@@ -9,7 +9,7 @@
         {{ end }}
         <div class="posts-list">
             {{range first 2 .Data.Pages}}
-            {{partial "preview.html" .}}
+            {{partial "preview.html" (dict "Page" . "ShowPlayer" "true")}}
         {{end}}
         </div>
           <ul class="pager main-pager">
