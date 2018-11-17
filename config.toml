@@ -4,7 +4,7 @@ copyright = "Copyright (c) 2016, Olof Landin; all rights reserved."
 Paginate = 50
 summaryLength = 30
 DefaultContentLanguage = "sv"
-canonifyURLs=true
+canonifyURLs=false
 googleAnalytics="UA-75995835-1"
 [author]
     name = "Olof Landin"
