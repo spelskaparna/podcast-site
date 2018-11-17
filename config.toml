@@ -6,7 +6,7 @@ canonifyurls = true
 Paginate = 50
 summaryLength = 30
 DefaultContentLanguage = "sv"
-
+googleAnalytics=UA-75995835-1
 [author]
     name = "Olof Landin"
     email= "info@spelskaparna.se"

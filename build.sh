@@ -1,1 +1,1 @@
-hugo -v --theme=rocktopus --buildFuture
+hugo -v --theme=beautifulhugo --buildFuture

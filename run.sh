@@ -1,1 +1,1 @@
-hugo server -v --theme=rocktopus --buildFuture --noHTTPCache
+hugo server -v --theme=beautifulhugo --buildFuture --noHTTPCache
