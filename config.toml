@@ -7,15 +7,19 @@ summaryLength = 30
 DefaultContentLanguage = "sv"
 canonifyURLs=true
 googleAnalytics="UA-75995835-1"
+disqusShortname = "spelskaparna"
 [author]
     name = "Olof Landin"
     email= "info@spelskaparna.se"
     facebook = "spelskaparna"
     twitter = "ollelandin"
-    instagram = "https://twitter.com/ollelandin"
+    instagram = "spelskaparna"
 [params]
     subtitle = "podcasten om personerna bakom spelen"
     logo = "img/logo2.png"
+    comments = true
+    delayDisqus = false
+    socialShare = true
 [menu]
     # Menu for the nav bar.
     # Ideal count is 3 items, see demo site for an example
