@@ -72,14 +72,16 @@ def extract_description(number):
     path = os.path.join('public','episode', str(number), 'index.html')
     with open(path,'rb') as html:
         soup = BeautifulSoup(html, "html.parser")
-        description = soup.find('div','content')
-    return str(description)
+        description = soup.find('article','blog-post')
+        [x.decompose() for x in description.findAll('section')]
+    string = "\n".join(str(description).split("\n")[1:-1])
+    return string
 
 def extract_description_text(number):
     path = os.path.join('public','episode', str(number), 'index.html')
     with open(path,'rb') as html:
         soup = BeautifulSoup(html, "html.parser")
-        description = soup.find('div','content').find('p')
+        description = soup.find('article','blog-post').find("p")
     return strip_tags(str(description))
 
 def extract_tags(number):
