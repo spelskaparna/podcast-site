@@ -94,12 +94,12 @@ def extract_file_details(title, u, p):
     url = "https://four.libsyn.com/content/scheduled-posts"
     driver.get(url)
 
-    xpath = "//node()[contains(@data-sort-val,'{}')]//text()[contains(.,'Link/Embed')]/../..".format(title)
+    xpath = "//node()[contains(@data-sort-val,'{}')]//text()[contains(.,'Link/Embed')]/..".format(title)
     btn = driver.find_element_by_xpath(xpath)
     btn.click()
     time.sleep(2)
-    url = driver.wait.until(EC.element_to_be_clickable((By.XPATH,"//text()[contains(.,'Direct Download')]/../..//input"))).get_attribute('value')
-    dir_url = driver.wait.until(EC.element_to_be_clickable((By.XPATH,"//text()[contains(.,'Libsyn Directory URL')]/../..//input"))).get_attribute('value')
+    url = driver.wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id = 'direct-download']"))).get_attribute('value')
+    dir_url = driver.wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id = 'directory-url']"))).get_attribute('value')
     pattern = r'.*/id/(\d*)'
     libsyn_id = re.compile(pattern).match(dir_url).group(1)
     return url, libsyn_id
