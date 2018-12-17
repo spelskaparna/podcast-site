@@ -28,7 +28,7 @@ def episode_file_path(number):
 def extract_title(number):
     path = episode_file_path(number)
     pattern = r'{}.*"(.*)"'
-    fields = ["name", "occupation", "company"]
+    fields = ["name", "occupation", "company", "subtitle"]
     programs = []
     for field in fields:
         program = re.compile(pattern.format(field))
@@ -41,7 +41,10 @@ def extract_title(number):
                 match = program.match(str(row))
                 if match:
                     matches[name]= match.group(1)
-    title = '{} {} ({} | {})'.format(number, matches['name'], matches['occupation'], matches['company'])
+    if matches["subtitle"]:
+        title = '{} {} ({})'.format(number, matches['name'], matches['subtitle'])
+    else:
+        title = '{} {} ({} | {})'.format(number, matches['name'], matches['occupation'], matches['company'])
     return title
 
 def extract_date(number):
