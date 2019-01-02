@@ -41,7 +41,7 @@ def extract_title(number):
                 match = program.match(str(row))
                 if match:
                     matches[name]= match.group(1)
-    if matches["subtitle"]:
+    if  "subtitle" in matches and matches["subtitle"]:
         title = '{} {} ({})'.format(number, matches['name'], matches['subtitle'])
     else:
         title = '{} {} ({} | {})'.format(number, matches['name'], matches['occupation'], matches['company'])
