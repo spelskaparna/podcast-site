@@ -22,10 +22,21 @@ def strip_tags(html):
     return s.get_data()
 
 def episode_file_path(number):
-    path = os.path.join('content','episode', str(number) +'.md')
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    path = os.path.join(dir_path, 'content','episode', str(number) +'.md')
     return path
 
 def extract_title(number):
+    name, occupation, company, subtitle = extract_meta_data(number)
+    if subtitle:
+        title = '{} {} ({})'.format(number, name, subtitle)
+    else:
+        title = '{} {} ({} | {})'.format(number, name, occupation, company)
+    return title
+
+
+
+def extract_meta_data(number):
     path = episode_file_path(number)
     pattern = r'{}.*"(.*)"'
     fields = ["name", "occupation", "company", "subtitle"]
@@ -41,11 +52,16 @@ def extract_title(number):
                 match = program.match(str(row))
                 if match:
                     matches[name]= match.group(1)
-    if  "subtitle" in matches and matches["subtitle"]:
-        title = '{} {} ({})'.format(number, matches['name'], matches['subtitle'])
+    name = matches['name']
+    subtitle = None
+    occupation = None
+    company = None
+    if 'subtitle' in matches:
+        subtitle = matches['subtitle']
     else:
-        title = '{} {} ({} | {})'.format(number, matches['name'], matches['occupation'], matches['company'])
-    return title
+        occupation = matches['occupation']
+        company = matches['company']
+    return name, occupation, company, subtitle
 
 def extract_date(number):
     path = episode_file_path(number)

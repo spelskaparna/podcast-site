@@ -147,7 +147,8 @@ function render(name, company, occupation, episode_number, asset_folder, templat
         
     app.project.save(new File(template_folder + episode_number + ".aep"));
 
-    app.project.renderQueue.items.add(finalMovie);
+    rq_item = app.project.renderQueue.items.add(finalMovie);
+    rq_item.outputModule(1).file = File(template_folder + episode_number + ".mov");
     app.project.renderQueue.render()
 }
 

@@ -1,16 +1,16 @@
 import subprocess
 import os
 import click
+import sys
+sys.path.append('..')
+from episode_parser import extract_meta_data
 
 
 @click.command()
 @click.option('--template_path', prompt='Path to the After Effects project')
 @click.option('--episode', prompt='Episode number')
 def run_after_effects_script(template_path, episode):
-    name = "Philip Örum"
-    company="Landfall Games"
-    occupation="Programmerare"
-
+    name, occupation, company, subtitle = extract_meta_data(episode)
     dir_path = os.path.dirname(os.path.realpath(__file__))
     script_name = "automate.jsx"
     script_path = os.path.join(dir_path, script_name)
