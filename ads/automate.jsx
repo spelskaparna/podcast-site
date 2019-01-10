@@ -95,8 +95,10 @@ function openTemplate(folder){
     //}
 }
 
-function render(name, company, occupation, episode_number, asset_folder, template_folder){
-    openTemplate(template_folder);
+function render(name, company, occupation, episode_number, asset_folder, template_folder, use_open_project){
+    if(parseInt(use_open_project) == 0){
+        openTemplate(template_folder);
+    }
     var comp = getComp ("Intro");
     changeText(comp, "Company", company);
     changeText(comp, "Name", name);
@@ -107,7 +109,6 @@ function render(name, company, occupation, episode_number, asset_folder, templat
     var end = getComp ("End");   
    changeText(end, "Episode", numberName);
    
-    var finalMovie = getComp ("Combined");
    
     
     transcriptPath = asset_folder  + episode_number + ".txt";
@@ -144,12 +145,24 @@ function render(name, company, occupation, episode_number, asset_folder, templat
     var audioLayerPropName = "ADBE AudWave-0001";
     var waveProp = trailer.layer("Audio Wave").property("Effects").property("ADBE AudWave").property(audioLayerPropName);
     waveProp.setValue(audio.index);
-        
-    app.project.save(new File(template_folder + episode_number + ".aep"));
 
-    rq_item = app.project.renderQueue.items.add(finalMovie);
-    rq_item.outputModule(1).file = File(template_folder + episode_number + ".mov");
-    app.project.renderQueue.render()
+    //Setting the duration of the trailer to duration of the audio
+    trailer.duration = audio.source.duration;
+
+    // Setting up the resulting composition
+    var finalMovie = getComp ("Combined");
+    var trailerLayer = finalMovie.layer("Trailer");
+    var startTime = trailerLayer.outPoint;
+    var endLayer = finalMovie.layer("End");
+    endLayer.startTime = startTime;
+    var finalMovieDuration = endLayer.outPoint;
+    finalMovie.duration = finalMovieDuration;
+        
+    // app.project.save(new File(template_folder + episode_number + ".aep"));
+
+    // rq_item = app.project.renderQueue.items.add(finalMovie);
+    // rq_item.outputModule(1).file = File(template_folder + episode_number + ".mov");
+    // app.project.renderQueue.render()
 }
 
 //render('Philip Örum', 'Landfall Games', 'Programmerare', '21', '/Users/oloflandin/Creative Cloud Files/Film/Trailers/');
