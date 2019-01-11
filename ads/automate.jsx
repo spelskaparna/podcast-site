@@ -6,6 +6,9 @@
     var times = [];
     while(!f.eof){
         var line = f.readln();
+        if(line==""){
+            continue;
+        }
         if( i % 2 == 0){
             times.push(line);
     }else{
@@ -73,8 +76,14 @@ function scanPropGroupProperties(propGroup)
 
 function addTextLine(comp, text, startTime, endTime, num){
     var textLayer = comp.layer("TextTemplate");
+    var layerName = "Text" + num;
+
+    var layer = comp.layer(layerName);
+    if(layer){
+        layer.remove();
+    }
     var newText = textLayer.duplicate();
-    newText.name = "Text" + num;
+    newText.name = layerName;     
     var selector = newText.property("ADBE Text Properties").property("ADBE Text Animators").property("ADBE Text Animator").property("ADBE Text Selectors").property("ADBE Text Selector");
    
     var startSelector = selector.property("ADBE Text Percent Start");    
@@ -95,23 +104,33 @@ function openTemplate(folder){
     //}
 }
 
-function render(name, company, occupation, episode_number, asset_folder, template_folder, use_open_project){
-    if(parseInt(use_open_project) == 0){
-        openTemplate(template_folder);
+function addOrReplace(comp, asset, layerName){
+    var layer = comp.layer(layerName);
+    if(layer){
+        layer.remove();
+    }
+    layer = comp.layers.add(asset); 
+    layer.name = layerName;
+    return layer; 
+}
+
+function render(name, company, occupation, episodeNumber, textName, audioName, backgroundName, outputName,assetFolder, templateFolder, useOpenProject){
+    if(parseInt(useOpenProject) == 0){
+        openTemplate(templateFolder);
     }
     var comp = getComp ("Intro");
     changeText(comp, "Company", company);
     changeText(comp, "Name", name);
     changeText(comp, "Occupation", occupation);
-    var numberName = "#" + episode_number + " " + name;
+    var numberName = "#" + episodeNumber + " " + name;
     var trailer = getComp ("Trailer");
     changeText(trailer, "Episode", numberName);
     var end = getComp ("End");   
-   changeText(end, "Episode", numberName);
+    changeText(end, "Episode", numberName);
    
    
     
-    transcriptPath = asset_folder  + episode_number + ".txt";
+    transcriptPath = assetFolder  + textName;
     transcript = parseTranscript(transcriptPath);
     
     for(var i=0; i < transcript.length; i++){
@@ -125,25 +144,29 @@ function render(name, company, occupation, episode_number, asset_folder, templat
     // Importing a audio and background image
     
     app.beginUndoGroup("Import file");  
-    var audio_path = asset_folder + episode_number + ".mp3";
-    var image_path = asset_folder + episode_number + ".jpg";
-    var importOpts = new ImportOptions(File(audio_path));  
+    var audioPath = assetFolder + audioName;
+    var imagePath = assetFolder + backgroundName;
+    var importOpts = new ImportOptions(File(audioPath));  
     var audioImport = app.project.importFile(importOpts);
-    importOpts = new ImportOptions(File(image_path));  
+    importOpts = new ImportOptions(File(imagePath));  
     var imageImport = app.project.importFile(importOpts);  
       
-    var audio = trailer.layers.add(audioImport);  
+    var audio = addOrReplace(trailer, audioImport, "Audio");  
     //Replace image graphics
-     trailer.layer("Background").replaceSource(imageImport, false);
+    var background = trailer.layer("Background");
+    background.replaceSource(imageImport, false);
+    background.outPoint = audio.source.duration;
+    trailer.layer("Episode").outPoint = audio.source.duration;
      
-    audio.name = "Audio";
     app.endUndoGroup();  
 
     
    
     // Setting audio to the waveform
     var audioLayerPropName = "ADBE AudWave-0001";
-    var waveProp = trailer.layer("Audio Wave").property("Effects").property("ADBE AudWave").property(audioLayerPropName);
+    var audioWave = trailer.layer("Audio Wave");
+    audioWave.outPoint = audio.source.duration;
+    var waveProp = audioWave.property("Effects").property("ADBE AudWave").property(audioLayerPropName);
     waveProp.setValue(audio.index);
 
     //Setting the duration of the trailer to duration of the audio
@@ -151,19 +174,21 @@ function render(name, company, occupation, episode_number, asset_folder, templat
 
     // Setting up the resulting composition
     var finalMovie = getComp ("Combined");
-    var trailerLayer = finalMovie.layer("Trailer");
+    var trailerLayer = addOrReplace(finalMovie, trailer, "Trailer");  
+    var introLayer = finalMovie.layer("Intro");
+    trailerLayer.startTime = introLayer.outPoint;
     var startTime = trailerLayer.outPoint;
     var endLayer = finalMovie.layer("End");
     endLayer.startTime = startTime;
     var finalMovieDuration = endLayer.outPoint;
     finalMovie.duration = finalMovieDuration;
         
-    // app.project.save(new File(template_folder + episode_number + ".aep"));
+    // app.project.save(new File(template_folder + outputName + ".aep"));
 
-    // rq_item = app.project.renderQueue.items.add(finalMovie);
-    // rq_item.outputModule(1).file = File(template_folder + episode_number + ".mov");
-    // app.project.renderQueue.render()
+    rq_item = app.project.renderQueue.items.add(finalMovie);
+    rq_item.outputModule(1).file = File(assetFolder + outputName + ".mov");
+    app.project.renderQueue.queueInAME(true);
+    //app.project.renderQueue.render()
 }
 
-//render('Philip Örum', 'Landfall Games', 'Programmerare', '21', '/Users/oloflandin/Creative Cloud Files/Film/Trailers/');
 
