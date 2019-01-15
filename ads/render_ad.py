@@ -29,8 +29,15 @@ def run_after_effects_script(template_path, episode, use_open_project, text, aud
         background= "{}.jpg".format(episode)
     if output is None:
         output = episode
+    first_subtitle = company
+    second_subtitle = occupation
+    if subtitle is not None:
+        first_subtitle = subtitle
+    if  second_subtitle is None:
+        second_subtitle = company
 
-    function_call="render('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(name, company, occupation, episode,text, 
+    
+    function_call="render('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(name, first_subtitle, second_subtitle, episode,text, 
     audio,background,output, assets_path + "/", template_path + "/",use_open_project)
     cmd = 'arch -x86_64 osascript ASfile.scpt "{}" "{}"'.format(script_path, function_call)
     print(cmd)

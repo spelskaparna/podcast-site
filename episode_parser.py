@@ -58,8 +58,9 @@ def extract_meta_data(number):
     company = None
     if 'subtitle' in matches:
         subtitle = matches['subtitle']
-    else:
+    if 'occupation' in matches:
         occupation = matches['occupation']
+    if 'company' in matches:
         company = matches['company']
     return name, occupation, company, subtitle
 
