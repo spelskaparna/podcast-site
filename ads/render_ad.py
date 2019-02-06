@@ -36,9 +36,13 @@ def run_after_effects_script(template_path, episode, use_open_project, text, aud
     if  second_subtitle is None:
         second_subtitle = company
 
-    
-    function_call="render('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(name, first_subtitle, second_subtitle, episode,text, 
-    audio,background,output, assets_path + "/", template_path + "/",use_open_project)
+    args = [name, first_subtitle, second_subtitle, episode,text, audio,background,output, assets_path + "/", template_path + "/",use_open_project]
+    arg_string = ""
+    for arg in args:
+        arg_string += "'{}',".format(arg)
+    arg_string = arg_string[:-1]
+
+    function_call="render({})".format(arg_string)
     cmd = 'arch -x86_64 osascript ASfile.scpt "{}" "{}"'.format(script_path, function_call)
     print(cmd)
     ae = subprocess.call(cmd,shell=True)
