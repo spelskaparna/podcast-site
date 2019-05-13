@@ -33,7 +33,7 @@ def login_libsyn(login, passwd):
     return driver
 
 
-def upload(title, description, date, login, passwd):
+def upload(season, episode, title, description, summary, author,date, login, passwd):
     driver = login_libsyn(login, passwd)
     driver.get("https://four.libsyn.com/content_edit/index/mode/episode")
     details_tab_xpath = "//node()[@data-label='Details']"
@@ -42,6 +42,9 @@ def upload(title, description, date, login, passwd):
     title_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "item_title")))
     title = title
     title_field.send_keys(title)
+    # Set itunes information
+    name, occupation, company, subtitle = ep.extract_meta_data(episode)
+    fill_itunes_data_helper(driver, name, company, occupation, subtitle, season, episode,summary, author)
 
     src_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_18")))
     src_btn.click()
@@ -87,7 +90,46 @@ def upload(title, description, date, login, passwd):
     button = driver.wait.until(EC.element_to_be_clickable(
             (By.XPATH, "//text()[contains(.,'Upload from Hard Drive')]/../..")))
     button.click()
- 
+
+def fill_itunes_data_helper(driver, name, company, occupation, subtitle, season, episode,summary, author):
+    if not subtitle:
+        subtitle= "{} | {}".format(company, occupation)
+    title = "{} ({})".format(name, subtitle)
+    itunes_title_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "itunes_title")))
+    itunes_title_field.send_keys(title)
+    itunes_summary_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "item_itunes_summary")))
+    itunes_summary_field.send_keys(summary)
+    itunes_season_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "season_number")))
+    itunes_season_field.send_keys(season)
+    itunes_episode_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "itunes_episode_number")))
+    itunes_episode_field.send_keys(episode)
+    itunes_author_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "item_itunes_author")))
+    itunes_author_field.send_keys(author)
+    # Selec options
+    episode_type_full_id = 'itunes_episode_type-full'
+    episode_type_full = driver.wait.until(EC.element_to_be_clickable((By.ID, episode_type_full_id)))
+    episode_type_full.click()
+    itunes_explicit_clean = 'item_itunes_explicit-clean'
+    itunes_rating = driver.wait.until(EC.element_to_be_clickable((By.ID, itunes_explicit_clean)))
+    itunes_rating.click()
+
+
+def fill_itunes_data(name, occupation, company, subtitle, season, episode, summary, author, login, passwd):
+    driver = login_libsyn(login, passwd)
+    driver.get("https://four.libsyn.com/content/previously-published")
+    search_field = driver.wait.until(EC.element_to_be_clickable((By.ID, "search")))
+    search_title = "{} {}".format(episode, name)
+    search_field.send_keys(search_title)
+    time.sleep(2)
+    edit_xpath = "//node()[@title='Edit']"
+    edit_episode = driver.wait.until(EC.element_to_be_clickable((By.XPATH, edit_xpath)))
+    edit_episode.click()
+    time.sleep(1)
+    details_tab_xpath = "//node()[@data-label='Details']"
+    details_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, details_tab_xpath)))
+    details_tab.click()
+    fill_itunes_data_helper(driver, name, company, occupation, subtitle, season, episode,summary, author)
+    
 def extract_file_details(title, u, p):
     driver = login_libsyn(u, p)
     #url = "https://four.libsyn.com/content/previously-published"
@@ -128,6 +170,9 @@ def replace(param, value, number):
 @click.argument('feature')
 def start(u, p, number, feature):
     title = ep.extract_title(number)
+    summary = ep.extract_description_text(number).replace("\n", " ")
+    author = "Olle Landin"
+    season = 1
     if feature == 'extract':
         url, libsyn_id = extract_file_details(title, u, p)
         replace('audiofile', url, number)
@@ -135,7 +180,10 @@ def start(u, p, number, feature):
     elif feature == 'upload':
         description = ep.extract_description(number)
         date = ep.extract_date(number)
-        upload(title, description, date, u, p)
+        upload(season, number, title, description, summary, author,date, u, p)
+    elif feature == 'itunes':
+        name, occupation, company, subtitle = ep.extract_meta_data(number)
+        fill_itunes_data(name, occupation, company, subtitle, season, number, summary, author,u, p)
     input("Press Enter to continue...")
 
 

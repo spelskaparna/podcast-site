@@ -95,6 +95,8 @@ def extract_description(number):
         description = soup.find('article','blog-post')
         [x.decompose() for x in description.findAll('section')]
     string = "\n".join(str(description).split("\n")[1:-1])
+    # Remove weird html-id
+    string = string.replace('id="länkar', 'id="lankar')
     return string
 
 def extract_description_text(number):
