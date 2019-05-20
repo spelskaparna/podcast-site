@@ -1,0 +1,31 @@
+0
+Vi har ju aldrig riktigt varit bekväma med att göra spel med reklam i eller...
+5
+...spel med consumables, som det heter, där man kan köpa...
+9.3
+...en sak flera gånger i ett spel och det...
+12
+Samtidigt förstod vi ju där någon gång kring...innan Smash Hit att...
+16.6
+...för att ett spel ska kunna vara framgångsrikt i den rådande miljön...
+20.7
+...på App Store framför allt. Så måste ett spel vara gratis nu.
+24
+Hur kan man göra både och samtidigt? Hur kan ett spel vara ett betalspel och ändå...
+29
+...vara tillgängligt för alla dom människor som inte kan eller inte vill betala för spel.
+32.6
+Så då gjorde vi den här checkpoint-lösningen som vi har idag. 
+36
+Så du kan spela hela spelet gratis, men om du vill...
+39.2
+...spara dina framsteg...eller dina framsteg i spelet sparas... 
+42.3
+...men om du vill kunna forsätta från checkpoint två så måste du äga premium-varianten av spelet
+47
+Det känns som en väldigt rättvis och generös lösning.
+50.2
+
+
+
+

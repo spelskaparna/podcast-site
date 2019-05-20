@@ -1,0 +1,26 @@
+0
+Det var när jag tog trupper från en provins och anföll i en annan.
+5
+Sen väntade jag till att deras moral gick under 20% så krashade spelet.
+11.7
+Varenda gång. Sen skickade jag sparfilen till programmeraren, som jag kände jätteväl.
+16.6
+Så pratade jag med honom efter att han hade fixat det.
+19
+Så frågade jag - Vad var det egentligen som hände?
+22
+Då sa han såhär: När du gick in från en provins till en annan...
+25
+...så tog det ungefär en minut för din moral att sänkas under 20%.
+30.1
+Exakt under den här minuten, på andra sidan jordklotet så var det ett...
+35.5
+...japansk fartyg som skulle lasta av trupper.
+38.2
+Jag hade inte implementerat avlastning av trupper... 
+41
+...så dom gjorde någonting som inte funkade överhuvudtaget.
+43.7
+Det illustrerar hur svårt det kan vara att faktiskt reproducera.
+49
+
