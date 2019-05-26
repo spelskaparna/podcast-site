@@ -123,11 +123,26 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
     changeText(comp, "Name", name);
     changeText(comp, "Occupation", occupation);
     var numberName = "#" + episodeNumber + " " + name;
+
+    // Change the background
+    var nBgs = 4;
+    choice = (episodeNumber % nBgs) + 1;
+    for(var i=1; i <= nBgs; i++){
+        var background = comp.layer("Background" + i);
+        if(choice == i){
+            background.enabled = true;
+        }else{
+            background.enabled = false;
+        }
+    }
+
+
     var trailer = getComp ("Trailer");
     changeText(trailer, "Episode", numberName);
     var end = getComp ("End");   
     changeText(end, "Episode", numberName);
-   
+    
+    
    
     
     transcriptPath = assetFolder  + textName;
@@ -184,7 +199,6 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
     finalMovie.duration = finalMovieDuration;
         
     // app.project.save(new File(template_folder + outputName + ".aep"));
-
     rq_item = app.project.renderQueue.items.add(finalMovie);
     rq_item.outputModule(1).file = File(assetFolder + outputName + ".mov");
     app.project.renderQueue.queueInAME(true);
