@@ -114,7 +114,7 @@ function addOrReplace(comp, asset, layerName){
     return layer; 
 }
 
-function render(name, company, occupation, episodeNumber, textName, audioName, backgroundName, outputName,assetFolder, templateFolder, useOpenProject){
+function render(name, company, occupation, episodeNumber, textName, audioName, backgroundName, outputName,assetFolder, templateFolder, useOpenProject, render){
     if(parseInt(useOpenProject) == 0){
         openTemplate(templateFolder);
     }
@@ -198,6 +198,9 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
     var finalMovieDuration = endLayer.outPoint;
     finalMovie.duration = finalMovieDuration;
         
+    if(parseInt(render) == 0){
+        return;
+    }
     // app.project.save(new File(template_folder + outputName + ".aep"));
     rq_item = app.project.renderQueue.items.add(finalMovie);
     rq_item.outputModule(1).file = File(assetFolder + outputName + ".mov");
