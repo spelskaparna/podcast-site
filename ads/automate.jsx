@@ -97,9 +97,9 @@ function addTextLine(comp, text, startTime, endTime, num){
  }
 
 
-function openTemplate(folder){
+function openTemplate(path){
   //  if(app.project.file == null){
-        var trailer = new File(folder + "Template.aep");
+        var trailer = new File(path);
         app.open(trailer)
     //}
 }

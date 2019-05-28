@@ -14,7 +14,8 @@ from episode_parser import extract_meta_data
 @click.option('--audio', help='name of audio file', default=None)
 @click.option('--text', help='name of text file', default=None)
 @click.option('--output', help='name of the rendered file', default=None)
-def run_after_effects_script(template_path, episode, use_open_project, text, audio, background, output):
+@click.option('--render', help='should we auto-render', default=1)
+def run_after_effects_script(template_path, episode, use_open_project, text, audio, background, output, render):
     name, occupation, company, subtitle = extract_meta_data(episode)
     dir_path = os.path.dirname(os.path.realpath(__file__))
     script_name = "automate.jsx"
@@ -36,7 +37,7 @@ def run_after_effects_script(template_path, episode, use_open_project, text, aud
     if  second_subtitle is None:
         second_subtitle = company
 
-    args = [name, first_subtitle, second_subtitle, episode,text, audio,background,output, assets_path + "/", template_path + "/",use_open_project]
+    args = [name, first_subtitle, second_subtitle, episode,text, audio,background,output, assets_path + "/", template_path, use_open_project, render]
     arg_string = ""
     for arg in args:
         arg_string += "'{}',".format(arg)
