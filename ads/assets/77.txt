@@ -1,0 +1,29 @@
+0
+Jag hade gjort någon programmeringsalgoritm för att det skulle dyka upp...
+3.5
+nya saker när man kom högre upp från marken.
+6.5 
+Så att man ska vilja komma uppåt för att hitta nya saker, men sen så märke jag att...
+10
+Efter ett tag så började spelet bugga ur sig.
+13.5
+Men det gick liksom inte sönder, det var bara att det dök upp konstiga saker ju högre upp man kommer.
+17.3
+Så var det som att jag insåg att det här spelet har som någon sorts eget liv.
+20.6
+Jag vet inte hur det har blivit så, men...
+23.6
+Så att jag verkligen själv ville komma högra upp och se vad som skulle hända...
+27.8
+...för jag hade ingen aning...Det var som att den började blanda ihop...
+31.2
+...konstiga objekt med varanda, så det dök upp morfade bilder och...
+35.6
+...nivåer...Det tog aldrig slut.
+38.5
+Sedan dess har jag varit väldigt fascinerad av den typen av kod...
+42.2
+Alltså att försöka skriva kod på ett så modulärt sätt som möjligt, så att...
+46
+...så att när det uppstår buggar så blir dom ofta intressanta.
+49.1
