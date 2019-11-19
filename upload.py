@@ -26,7 +26,7 @@ def login_libsyn(login, passwd):
             (By.NAME, "password")))
         pwd.send_keys(passwd)
         button = driver.wait.until(EC.element_to_be_clickable(
-            (By.XPATH, "//input[@type = 'submit']")))
+            (By.XPATH, "//button[@type = 'submit']")))
         button.submit()
     except TimeoutException:
         print("Box or Button not found in google.com")
@@ -35,6 +35,7 @@ def login_libsyn(login, passwd):
 
 def upload(season, episode, title, description, summary, author,date, login, passwd):
     driver = login_libsyn(login, passwd)
+    time.sleep(2)
     driver.get("https://four.libsyn.com/content_edit/index/mode/episode")
     details_tab_xpath = "//node()[@data-label='Details']"
     details_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, details_tab_xpath)))
@@ -46,17 +47,13 @@ def upload(season, episode, title, description, summary, author,date, login, pas
     name, occupation, company, subtitle = ep.extract_meta_data(episode)
     fill_itunes_data_helper(driver, name, company, occupation, subtitle, season, episode,summary, author)
 
-    src_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_18")))
-    src_btn.click()
+    #src_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_18")))
+    #src_btn.click()
+    description = json.dumps(description)
+    tiny = "tinymce.activeEditor.execCommand('mceInsertContent', false, {});".format(description)
+    #driver.execute_script(''.format(json.dumps(description)));
+    driver.execute_script(tiny);
 
-    iframe = driver.find_element_by_xpath("//iframe[@src='https://four.libsyn.com/lib/tinymce_4-6-5/plugins/codemirror/source.html']")
-    driver.switch_to.frame(iframe)
-    time.sleep(3)
-    driver.execute_script('codemirror.getDoc().setValue({})'.format(json.dumps(description)));
-    time.sleep(3)
-    driver.switch_to.default_content()
-    ok_btn = driver.wait.until(EC.element_to_be_clickable((By.ID, "mceu_44")))
-    ok_btn.click()
     scheduling_xpath = "//node()[@data-label='Scheduling']"
     scheduling_tab = driver.wait.until(EC.element_to_be_clickable((By.XPATH, scheduling_xpath)))
     scheduling_tab.click()
@@ -136,11 +133,19 @@ def extract_file_details(title, u, p):
     url = "https://four.libsyn.com/content/scheduled-posts"
     driver.get(url)
 
-    xpath = "//node()[contains(@data-sort-val,'{}')]//text()[contains(.,'Link/Embed')]/..".format(title)
+    #xpath = "//node()[contains(@data-sort-val,'{}')]//text()[contains(.,'Link/Embed')]/..".format(title)
+    xpath = "//node()[@title='Link/Embed']"
     btn = driver.find_element_by_xpath(xpath)
     btn.click()
     time.sleep(2)
-    url = driver.wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id = 'direct-download']"))).get_attribute('value')
+
+    iframe = driver.find_element_by_xpath("//iframe[@src='https://cdn.walkme.com/player/lib/20190501-175243-1e3e1e65/resources/CD/CDhiddenIframe.compress.html']")
+    driver.switch_to.frame(iframe)
+    time.sleep(3)
+    driver.switch_to.default_content()
+    #url = driver.find_element_by_xpath("//input[@id = 'directory-url']").get_attribute('value')
+    url = driver.execute_script('document.getElementById("direct-download").getAttribute("value")')
+    #url = driver.wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id = 'directory-url']"))).get_attribute('value')
     dir_url = driver.wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id = 'directory-url']"))).get_attribute('value')
     pattern = r'.*/id/(\d*)'
     libsyn_id = re.compile(pattern).match(dir_url).group(1)
