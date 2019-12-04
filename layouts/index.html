@@ -8,7 +8,10 @@
           </div>
         {{ end }}
         <div class="posts-list">
-            {{range first 2 .Data.Pages}}
+            {{ $v1 := where .Site.Pages "Type" "episode" }}
+            {{ $v2 := where .Site.Pages ".IsPage" true }}
+            {{ $filtered := $v1 | intersect $v2 }}
+            {{range first 2 $filtered}}
             {{partial "preview.html" (dict "Page" . "ShowPlayer" "true")}}
         {{end}}
         </div>
