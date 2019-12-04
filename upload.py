@@ -26,7 +26,7 @@ def login_libsyn(login, passwd):
             (By.NAME, "password")))
         pwd.send_keys(passwd)
         button = driver.wait.until(EC.element_to_be_clickable(
-            (By.XPATH, "//input[@type = 'submit']")))
+            (By.XPATH, "//button[@type = 'submit']")))
         button.submit()
     except TimeoutException:
         print("Box or Button not found in google.com")
