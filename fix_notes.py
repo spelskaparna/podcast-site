@@ -8,7 +8,7 @@ def fix_file(name):
             
             if link_found:
                 if len(line) > 0 and line[0] != "*" and line[0] != "#":
-                    line = "* [{}] ()".format(line)
+                    line = "* [{}]()".format(line)
             result = line.replace(" ","").find("#Länkar")
             if result > -1:
                 link_found = True
