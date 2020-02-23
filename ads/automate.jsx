@@ -43,6 +43,7 @@ function getComp(name){
 }
 
 function changeText(comp, layerName, text){
+    // alert(layerName);
     var layer = comp.layer(layerName);
     var textProp = layer.property("Source Text");
     var textDocument = textProp.value;
@@ -70,7 +71,7 @@ function scanPropGroupProperties(propGroup)
             $.writeln("NEW GROUP: " + prop.matchName + "NAME: " + prop.name);
             // Found an indexed or named group, so check its nested properties
             scanPropGroupProperties(prop);
-        }
+        } 
     }
 }
 
@@ -114,36 +115,60 @@ function addOrReplace(comp, asset, layerName){
     return layer; 
 }
 
+function center(comp, layerName){
+    var layer = comp.layer(layerName);
+    var property = layer.property("Position"); 
+    var t = 0;
+    var nKeys = property.numKeys;
+    var rect = layer.sourceRectAtTime(t,false);
+    var pos = layer.property("Position").value;
+    var scale = layer.property("Scale").value/100;
+    var x = pos[0] + rect.left*scale[0] + rect.width/2*scale[0];
+    var deltaX = comp.width/2 - x;
+    for(var i = 0; i < property.numKeys; i++){
+        var time = property.keyTime(i+1);
+        property.setValueAtTime(time, pos + [deltaX,0,0]);
+    }
+    if(nKeys == 0){
+        property.setValueAtTime(0, pos + [deltaX,0,0]);
+    }
+}
+
 function render(name, company, occupation, episodeNumber, textName, audioName, backgroundName, outputName,assetFolder, templateFolder, useOpenProject, render){
     if(parseInt(useOpenProject) == 0){
         openTemplate(templateFolder);
     }
     var comp = getComp ("Intro");
-    changeText(comp, "Company", company);
+    var subtitle = occupation + " | " + company;
     changeText(comp, "Name", name);
-    changeText(comp, "Occupation", occupation);
+    center(comp, "Name");
+    for(var i=1; i < 5; i++){
+        var layerName = "Occupation";
+        if(i > 1){
+            layerName += " " + i; 
+        }
+        changeText(comp, layerName, subtitle);
+        center(comp, layerName);
+    }
     var numberName = "#" + episodeNumber + " " + name;
 
     // Change the background
-    var nBgs = 4;
-    choice = (episodeNumber % nBgs) + 1;
-    for(var i=1; i <= nBgs; i++){
-        var background = comp.layer("Background" + i);
-        if(choice == i){
-            background.enabled = true;
-        }else{
-            background.enabled = false;
-        }
-    }
+    // var nBgs = 4;
+    // choice = (episodeNumber % nBgs) + 1;
+    // for(var i=1; i <= nBgs; i++){
+    //     var background = comp.layer("Background" + i);
+    //     if(choice == i){
+    //         background.enabled = true;
+    //     }else{
+    //         background.enabled = false;
+    //     }
+    // }
 
 
     var trailer = getComp ("Trailer");
-    changeText(trailer, "Episode", numberName);
-    var end = getComp ("End");   
-    changeText(end, "Episode", numberName);
+    changeText(trailer, "Episode & Name", numberName);
     
-    
-   
+    return;
     
     transcriptPath = assetFolder  + textName;
     transcript = parseTranscript(transcriptPath);
@@ -168,10 +193,10 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
       
     var audio = addOrReplace(trailer, audioImport, "Audio");  
     //Replace image graphics
-    var background = trailer.layer("Background");
-    background.replaceSource(imageImport, false);
-    background.outPoint = audio.source.duration;
-    trailer.layer("Episode").outPoint = audio.source.duration;
+    // var background = trailer.layer("Background");
+    // background.replaceSource(imageImport, false);
+    // background.outPoint = audio.source.duration;
+    // trailer.layer("Episode").outPoint = audio.source.duration;
      
     app.endUndoGroup();  
 
@@ -179,7 +204,7 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
    
     // Setting audio to the waveform
     var audioLayerPropName = "ADBE AudWave-0001";
-    var audioWave = trailer.layer("Audio Wave");
+    var audioWave = trailer.layer("Waveform");
     audioWave.outPoint = audio.source.duration;
     var waveProp = audioWave.property("Effects").property("ADBE AudWave").property(audioLayerPropName);
     waveProp.setValue(audio.index);
