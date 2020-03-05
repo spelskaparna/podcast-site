@@ -1,22 +1,29 @@
-﻿function parseTranscript(path) {
+﻿function readFile(path) {
     var f = new File(path);
     f.open('r');
     var i = 0;
+    var strings = [];
+    while (!f.eof) {
+        var string = f.readln();
+        strings.push(string);
+    }
+    f.close();
+}
+
+function parseTranscript(strings) {
     var lines = [];
     var times = [];
-    while (!f.eof) {
-        var line = f.readln();
+    for (var j = 0; j < strings.length; j++) {
+        var line = strings[j];
         if (line == "") {
             continue;
         }
-        if (i % 2 == 0) {
+        if (j % 2 == 0) {
             times.push(line);
         } else {
             lines.push(line);
         }
-        i++;
     }
-    f.close();
 
     var transcript = [];
     var i;
@@ -143,12 +150,10 @@ function center(comp, layerName) {
     }
 }
 
-function render(name, company, occupation, episodeNumber, textName, audioName, backgroundName, outputName, assetFolder, templateFolder, useOpenProject, render) {
-    if (parseInt(useOpenProject) == 0) {
-        openTemplate(templateFolder);
-    }
+
+
+function render(name, subtitle, episodeNumber, audioName, transcript, outputName, render) {
     var comp = getComp("Intro");
-    var subtitle = occupation + " | " + company;
     changeText(comp, "Name", name);
     center(comp, "Name");
     for (var i = 1; i < 5; i++) {
@@ -177,10 +182,6 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
     var trailer = getComp("Trailer");
     changeText(trailer, "Episode & Name", numberName);
 
-
-    transcriptPath = assetFolder + textName;
-    transcript = parseTranscript(transcriptPath);
-
     clearText(trailer);
     for (var i = 0; i < transcript.length; i++) {
         line = transcript[i];
@@ -192,12 +193,14 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
     // Importing a audio and background image
 
     app.beginUndoGroup("Import file");
-    var audioPath = assetFolder + audioName;
-    var imagePath = assetFolder + backgroundName;
+    var folder = app.project.file.parent;
+    folder.changePath('Audio');
+    var audioPath = folder.getFiles(audioName);
+    // var imagePath = assetFolder + backgroundName;
     var importOpts = new ImportOptions(File(audioPath));
     var audioImport = app.project.importFile(importOpts);
-    importOpts = new ImportOptions(File(imagePath));
-    var imageImport = app.project.importFile(importOpts);
+    // importOpts = new ImportOptions(File(imagePath));
+    // var imageImport = app.project.importFile(importOpts);
 
     var audio = addOrReplace(trailer, audioImport, "Audio");
     //Replace image graphics
@@ -241,4 +244,13 @@ function render(name, company, occupation, episodeNumber, textName, audioName, b
     //app.project.renderQueue.render()
 }
 
-
+function render_from_file(name, company, occupation, episodeNumber, textName, audioName, backgroundName, outputName, assetFolder, templateFolder, useOpenProject, render_enabled) {
+    if (parseInt(useOpenProject) == 0) {
+        openTemplate(templateFolder);
+    }
+    transcriptPath = assetFolder + textName;
+    var strings = readFile(transcriptPath);
+    transcript = parseTranscript(strings);
+    var subtitle = occupation + " | " + company;
+    render(name, subtitle, episodeNumber, audioName, transcript, outputName, render_enabled);
+}
