@@ -1,29 +1,42 @@
 {{ define "main" }}
-  <div class="container" role="main">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        {{ with .Content }}
-          <div class="well">
-            {{.}}
-          </div>
-        {{ end }}
-        <div class="posts-list">
-            {{ $v1 := where .Site.Pages "Type" "episode" }}
-            {{ $v2 := where .Site.Pages ".IsPage" true }}
-            {{ $filtered := $v1 | intersect $v2 }}
-            {{range first 2 $filtered}}
-            {{partial "preview.html" (dict "Page" . "ShowPlayer" "true")}}
-        {{end}}
-        </div>
-          <ul class="pager main-pager">
-           {{ if .Paginator.HasNext }}
-              <li class="next">
-                <a href="{{ .URL }}episode/">{{ i18n "olderPosts" }} &rarr;</a>
-              </li>
-            {{ end }}
-          </ul>
-        {{partial "podcast.html"}}
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      {{ with .Content }}
+      <div class="well">
+        {{.}}
       </div>
+      {{ end }}
+      <div>
+        <h1 class="post-title">Välkommen!</h1>
+        Här finns avsnitt med personer från den svenska spelbranschens alla hörn! Vi som gör podden, ett gäng andra
+        spelutvecklare och inte minst allmänt spelintresserade håller till på Spelskaparnas Discord -
+        kom gärna in där du med!<br>
+        <a href="https://discord.gg/hBHEXss">
+          <img src='{{ "img/discord.png" | absURL}}' style="
+        display: inline; 
+        width: 40%;
+        min-width: 200px;
+        margin-top: 1em;
+        " /></a>
+      </div>
+      <div class="posts-list">
+        {{ $v1 := where .Site.Pages "Type" "episode" }}
+        {{ $v2 := where .Site.Pages ".IsPage" true }}
+        {{ $filtered := $v1 | intersect $v2 }}
+        {{range first 2 $filtered}}
+        {{partial "preview.html" (dict "Page" . "ShowPlayer" "true")}}
+        {{end}}
+      </div>
+      <ul class="pager main-pager">
+        {{ if .Paginator.HasNext }}
+        <li class="next">
+          <a href="{{ .URL }}episode/">{{ i18n "olderPosts" }} &rarr;</a>
+        </li>
+        {{ end }}
+      </ul>
+      {{partial "podcast.html"}}
     </div>
   </div>
+</div>
 {{ end }}
