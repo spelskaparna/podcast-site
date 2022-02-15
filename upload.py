@@ -120,10 +120,10 @@ def fill_itunes_data_helper(
         EC.element_to_be_clickable((By.ID, "itunes_title"))
     )
     itunes_title_field.send_keys(title)
-    itunes_summary_field = driver.wait.until(
-        EC.element_to_be_clickable((By.ID, "item_itunes_summary"))
-    )
-    itunes_summary_field.send_keys(summary)
+    # itunes_summary_field = driver.wait.until(
+    #     EC.element_to_be_clickable((By.ID, "item_itunes_summary"))
+    # )
+    # itunes_summary_field.send_keys(summary)
     itunes_season_field = driver.wait.until(
         EC.element_to_be_clickable((By.ID, "season_number"))
     )
