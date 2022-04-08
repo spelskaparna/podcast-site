@@ -31,7 +31,7 @@
       <ul class="pager main-pager">
         {{ if .Paginator.HasNext }}
         <li class="next">
-          <a href="{{ .URL }}episode/">{{ i18n "olderPosts" }} &rarr;</a>
+          <a href="{{ .Site.BaseURL }}episode/">{{ i18n "olderPosts" }} &rarr;</a>
         </li>
         {{ end }}
       </ul>
