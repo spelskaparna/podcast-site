@@ -1,1 +1,2 @@
-## First commit
+## Install 
+git submodule update --init --recursive
