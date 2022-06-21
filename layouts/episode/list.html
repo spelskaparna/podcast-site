@@ -21,7 +21,7 @@
         {{ end }}
         {{ if .Paginator.HasNext }}
         <li class="next">
-          <a href="{{ .Site.BaseURL }}/episode/page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }}
+          <a href="{{ .Site.BaseURL }}episode/page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }}
             &rarr;</a>
         </li>
         {{ end }}
