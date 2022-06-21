@@ -1,4 +1,4 @@
-baseurl = "https://spelskaparna.com"
+baseurl = "https://spelskaparna.com/"
 languageCode = "sv"
 title = "Spelskaparna"
 copyright = "Copyright (c) 2016, Olof Landin; all rights reserved."
