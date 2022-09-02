@@ -12,8 +12,10 @@ Jordglobe GEO (the game) is developed by Linbasta AB. This privacy policy aims t
 
 ## PERSONALIZED ADS
 The game contain ads. The ad services makes use of an Advertising Identifier on your device, and the history of that device’s activities, to serve more personalized ads to you. You can opt out from personalized ads by turning off the Advertising Identifier in your device settings. If you opt out, you will still receive ads that are not personalized. The ad services may also collect your IP adress in order to determine your location and serve you more localized ads. The game uses Iron Source to provide ads and you can read more about Iron Source at
+https://developers.is.com/ironsource-mobile/ironsource-mobile-privacy-policy/#step-1
 
-https://developers.ironsrc.com/ironsource-mobile/air/ironsource-privacy-policy/
+The game is built in Unity and uses Unity Analytics. You can read Unity’s privacy policy at
+https://unity.com/legal/privacy-policy
 
 
 ## CHILDREN’S PRIVACY
