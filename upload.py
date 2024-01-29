@@ -6,7 +6,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.os_manager import ChromeType
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
+
+import chromedriver_autoinstaller
 import json
 import click
 import episode_parser as ep
@@ -14,7 +18,10 @@ import re
 
 
 def init_driver():
-    driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+    chromedriver_autoinstaller.install()
+    options = webdriver.ChromeOptions()
+    options.headless = False
+    driver = webdriver.Chrome(options=options)
     driver.wait = WebDriverWait(driver, 0)
     return driver
 
@@ -23,7 +30,7 @@ def login_libsyn(login, passwd):
     driver = init_driver()
     driver.get("https://login.libsyn.com/")
     try:
-        email = driver.find_element_by_id("email")
+        email = driver.find_element(By.ID, "email")
         email.send_keys(login)
         pwd = driver.wait.until(EC.element_to_be_clickable((By.NAME, "password")))
         pwd.send_keys(passwd)
@@ -104,13 +111,13 @@ def upload(season, episode, title, description, summary, author, date, login, pa
         )
     )
     button.click()
-    time.sleep(2)
-    button = driver.wait.until(
-        EC.element_to_be_clickable(
-            (By.XPATH, "//text()[contains(.,'Upload from Hard Drive')]/../..")
-        )
-    )
-    button.click()
+    # time.sleep(4)
+    # button = driver.wait.until(
+    #     EC.element_to_be_clickable(
+    #         (By.XPATH, "//text()[contains(.,'Upload from Hard Drive')]/../..")
+    #     )
+    # )
+    # button.click()
 
 
 def fill_itunes_data_helper(
@@ -183,11 +190,11 @@ def extract_file_details(title, u, p):
 
     # xpath = "//node()[contains(@data-sort-val,'{}')]//text()[contains(.,'Link/Embed')]/..".format(title)
     xpath = "//node()[@title='Link/Embed']"
-    btn = driver.find_element_by_xpath(xpath)
+    btn = driver.find_element(By.XPATH, xpath)
     btn.click()
     time.sleep(2)
 
-    iframe = driver.find_element_by_xpath(
+    iframe = driver.find_element(By.XPATH, 
         "//iframe[@src='https://cdn.walkme.com/player/lib/20190501-175243-1e3e1e65/resources/CD/CDhiddenIframe.compress.html']"
     )
     driver.switch_to.frame(iframe)
