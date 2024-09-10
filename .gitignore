@@ -13,3 +13,4 @@ tags
 cs.json
 fbt
 ads/assets/*.mp4
+.env
