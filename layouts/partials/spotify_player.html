@@ -1,0 +1,42 @@
+{{ if .Params.spotify_episode_id }}
+<div class="post-player">
+    <!-- Using Anchor embed player since it's hosted on Anchor/Spotify -->
+    {{ if (in .Params.spotify_episode_id "-") }}
+        <!-- Full ID format like "170-Bjrn-Ottosson-...-e38mi1h" -->
+        <iframe src="https://anchor.fm/olle-landin6/embed/episodes/{{ .Params.spotify_episode_id }}"
+                title="{{ .Title }}"
+                height="102px"
+                width="100%"
+                frameborder="0"
+                scrolling="no">
+        </iframe>
+    {{ else }}
+        <!-- Short ID format - we need the full episode slug for Anchor embed -->
+        <!-- Fall back to audio file if available -->
+        {{ if .Params.audiofile }}
+        <audio controls style="width: 100%; margin: 10px 0;">
+            <source src="{{ .Params.audiofile }}" type="audio/mpeg">
+            <p>Your browser does not support the audio element. <a href="{{ .Params.audiofile }}">Download the episode</a></p>
+        </audio>
+        {{ else }}
+        <p style="padding: 10px; background: #f5f5f5; border-radius: 4px;">
+            <strong>Audio player unavailable</strong><br>
+            Episode ID: {{ .Params.spotify_episode_id }}
+        </p>
+        {{ end }}
+    {{ end }}
+</div>
+{{ else if .Params.audiofile }}
+<div class="post-player">
+    <!-- Fallback to basic HTML5 audio player -->
+    <audio controls style="width: 100%;">
+        <source src="{{ .Params.audiofile }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+{{ else if .Params.libsynid }}
+<!-- Fallback to old Libsyn player if no other data available -->
+<div class="post-player">
+    <iframe style="border: none" src="//html5-player.libsyn.com/embed/episode/id/{{.Params.libsynid}}/height/90/theme/custom/autoplay/no/autonext/no/thumbnail/yes/preload/no/no_addthis/no/direction/backward/render-playlist/no/custom-color/0007a6/" height="90" width="100%" scrolling="no"  allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+</div>
+{{end}}
