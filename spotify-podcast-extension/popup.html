@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Podcast Auto-Fill</title>
+    <style>
+        body {
+            width: 320px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #1db954;
+            font-size: 18px;
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #1db954;
+        }
+
+        .button {
+            background: #1db954;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .button:hover {
+            background: #1ed760;
+        }
+
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .server-status {
+            margin-top: 15px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 12px;
+            border-left: 3px solid #6c757d;
+        }
+
+        .server-status.online {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .server-status.offline {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .help {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #6c757d;
+        }
+
+        .episode-details {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .episode-info div {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .episode-info div:last-child {
+            margin-bottom: 0;
+        }
+
+        .episode-info strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .episode-info span {
+            color: #666;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>🎙️ Spelskaparna Auto-Fill</h2>
+        <p>Fill Spotify for Creators forms with Hugo episode data</p>
+    </div>
+
+    <button id="loadDataButton" class="button" style="margin-bottom: 15px; background: #1e3264;">Load All Episodes</button>
+
+    <div class="form-group" id="episodeSelectGroup" style="display: none;">
+        <label for="episodeSelect">Select Episode:</label>
+        <select id="episodeSelect" style="width: 100%; padding: 8px 12px; border: 2px solid #e1e5e9; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+            <option value="">-- Select an episode --</option>
+        </select>
+    </div>
+
+    <div id="episodeDetails" class="episode-details" style="display: none;">
+        <div class="episode-info">
+            <div><strong>Publish Date:</strong> <span id="episodeDate">-</span></div>
+            <div><strong>Guest:</strong> <span id="episodeGuest">-</span></div>
+        </div>
+    </div>
+
+    <button id="fillButton" class="button" style="display: none;">Auto-Fill Form</button>
+
+    <div id="status" class="status"></div>
+
+    <div id="serverStatus" class="server-status">
+        <div id="serverText">Checking server...</div>
+    </div>
+
+    <div class="help">
+        <strong>Instructions:</strong><br>
+        1. Start server: <code>python3 episode_server.py</code><br>
+        2. Click "Load All Episodes" to fetch data<br>
+        3. Select an episode from the dropdown<br>
+        4. Go to creators.spotify.com upload page<br>
+        5. Click "Auto-Fill Form"
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

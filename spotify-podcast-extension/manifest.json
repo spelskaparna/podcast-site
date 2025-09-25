@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Spotify Podcast Extension for Spelskaparna",
+  "version": "1.0",
+  "description": "Auto-fill Spotify/Anchor.fm podcast upload forms with episode data from your Hugo site",
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+
+  "host_permissions": [
+    "https://creators.spotify.com/*",
+    "https://podcasters.spotify.com/*",
+    "http://localhost:8765/*"
+  ],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Auto-fill episode data",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://creators.spotify.com/*",
+        "https://podcasters.spotify.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
