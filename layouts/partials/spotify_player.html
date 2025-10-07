@@ -1,8 +1,8 @@
 {{ if .Params.spotify_episode_id }}
 <div class="post-player">
-    <!-- Using Anchor embed player since it's hosted on Anchor/Spotify -->
+    <!-- Using Spotify embed player -->
     {{ if (in .Params.spotify_episode_id "-") }}
-        <!-- Full ID format like "170-Bjrn-Ottosson-...-e38mi1h" -->
+        <!-- Legacy Anchor format like "170-Bjrn-Ottosson-...-e38mi1h" -->
         <iframe src="https://anchor.fm/olle-landin6/embed/episodes/{{ .Params.spotify_episode_id }}"
                 title="{{ .Title }}"
                 height="102px"
@@ -11,19 +11,16 @@
                 scrolling="no">
         </iframe>
     {{ else }}
-        <!-- Short ID format - we need the full episode slug for Anchor embed -->
-        <!-- Fall back to audio file if available -->
-        {{ if .Params.audiofile }}
-        <audio controls style="width: 100%; margin: 10px 0;">
-            <source src="{{ .Params.audiofile }}" type="audio/mpeg">
-            <p>Your browser does not support the audio element. <a href="{{ .Params.audiofile }}">Download the episode</a></p>
-        </audio>
-        {{ else }}
-        <p style="padding: 10px; background: #f5f5f5; border-radius: 4px;">
-            <strong>Audio player unavailable</strong><br>
-            Episode ID: {{ .Params.spotify_episode_id }}
-        </p>
-        {{ end }}
+        <!-- Direct Spotify episode ID -->
+        <iframe style="border-radius:12px"
+                src="https://open.spotify.com/embed/episode/{{ .Params.spotify_episode_id }}?utm_source=generator"
+                width="100%"
+                height="152"
+                frameBorder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy">
+        </iframe>
     {{ end }}
 </div>
 {{ else if .Params.audiofile }}
